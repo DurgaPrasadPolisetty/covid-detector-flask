@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="text-center">
+        <h1>Analysis Report</h1>
+        <p class="subtitle">Diagnostic Insights powered by MedAI Engine</p>
+    </div>
+
+    <div class="result-card">
+        <div class="prediction-label">X-ray Analysis Input</div>
+        <div style="padding: 12px; background-color: rgba(0, 188, 212, 0.1); border-left: 4px solid var(--primary); margin-bottom: 20px; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px; color: #666;">
+                <strong>Your chest X-ray image has been processed.</strong> This is a radiographic scan showing your lungs and chest cavity. The AI system analyzes the radiographic patterns, densities, and structures visible in the X-ray to identify potential findings.
+            </p>
+        </div>
+
+        <div class="prediction-label">Primary Finding</div>
+        <div class="prediction-value {% if name == 'NORMAL' %}text-accent{% else %}text-danger{% endif %}">
+            {{ name }}
+        </div>
+
+        <div class="prediction-label">Confidence Score</div>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <span style="font-weight: 600; color: var(--primary);">{{ confidence }}%</span>
+        </div>
+        <div class="confidence-bar-bg">
+            <div class="confidence-bar-fill" style="width: {{ confidence }}%;"></div>
+        </div>
+
+        <div class="prediction-label">X-ray Findings Explanation</div>
+        <div class="ai-box">
+            {{ explanation | safe }}
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="{{ url_for('upload_file') }}" class="btn-premium text-center d-block" style="text-decoration: none;">
+            New Analysis
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="text-center">
+        <h1>MedAI Scanner</h1>
+        <p class="subtitle">AI-Powered Chest X-ray Diagnostic System</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="upload-form">
+        <label for="inputfile" class="upload-area" id="drop-area">
+            <div id="upload-placeholder">
+                <p style="font-size: 3rem; margin-bottom: 0;">📤</p>
+                <p>Click or drag X-ray image here</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Supports JPG, PNG, JPEG</p>
+            </div>
+            <img id="output-image" class="preview-img" style="display: none;"/>
+            <input type="file" name="file" id="inputfile" accept="image/*" onchange="preview_image(event)">
+        </label>
+
+        <button class="btn-premium" id="submit-btn" type="submit">Initialize Diagnosis</button>
+    </form>
+
+    <div class="mt-4 text-center">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+            ⚠️ Disclaimer: For educational purposes only. Always consult a medical professional.
+        </p>
+    </div>
+
+    <script type="text/javascript">
+        function preview_image(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('output-image');
+                var placeholder = document.getElementById('upload-placeholder');
+                output.src = reader.result;
+                output.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                var button = document.getElementById('submit-btn');
+                button.textContent = "Start Analysis";
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+services:
+  xray-ai:
+    build:
+      context: ..
+      dockerfile: docker/dockerfile
+    container_name: covid-detector-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=phi
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - covid_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-service
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - covid_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  covid_network:
+    driver: bridge
+
+volumes:
+  ollama_data:

@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+.git/
+.gitignore
+
+.ipynb_checkpoints/
+
+# 🔥 BIG FIX
+*.pth
+*.onnx.data
+
+# ❗ EXCEPT model folder (include model.onnx)
+!model/
+!model/*.onnx

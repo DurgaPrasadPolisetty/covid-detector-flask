@@ -1,0 +1,7 @@
+flask
+numpy>=1.24.4
+opencv-python-headless
+pillow
+onnxruntime-gpu
+requests
+python-dotenv
