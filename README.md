@@ -1,49 +1,230 @@
-﻿
-<div align="center">
-	<h1 align="center">
-	🧑‍⚕️<br />
-COVID-19 DETECTOR AI
-	</h1>
-	<span>
-	Deep CNN based AI app for COVID Diagnosis using Chest X-Rays
-	</span>
-</div>
+# AI-Powered COVID-19 X-ray Detection System with TensorRT & LLM Integration
 
-![demo](https://github.com/arunpandian7/covid-detector-flask/blob/master/demo.gif)
+---
 
+## Overview
 
-> ## ℹ️ This repository is a Flask version of previous iteration for the sake of deployment, which you can refer [here]([https://github.com/arunpandian7/covid-19-detection](https://github.com/arunpandian7/covid-19-detection)) 
+This project is a **containerized AI-powered medical imaging system** designed to detect COVID-19 from chest X-ray images and generate intelligent explanations using Large Language Models (LLMs).
 
-### Live Demo : [Heroku App](https://covid-xray-detector.herokuapp.com/)
-## Tech Stack
-- PyTorch (DL Model)
-- OpenCV 
-- Flask (Backend)
-- Gunicorn Server
-- Heroku (PaaS)
-## Model Training
-I have added a detailed notes on the training and inference model in this [repository](https://github.com/arunpandian7/covid-19-detection). 
-> In this repo, I will only have instructions to build front end and deploy.
-## Instruction
-#### To run locally,
-1) Clone this repository with `git clone`.
-2) Open a terminal inside the project directory.
-3) Install dependencies using `pip install -r requirements.txt`
-3) Run `python app.py` to open the app on `localhost:5000`.
-#### To Deploy on Heroku 
-> Deploying in heroku is bit of a hectic process involves a lot of bug fixing. I hope I can guide you through it. 
-> Since I used PyTorch and OpenCV in my app, heroku needs some pre-configuration.
+The system leverages **ONNX Runtime with NVIDIA TensorRT acceleration** for high-performance inference on GPU, and integrates **Ollama (LLM)** to provide human-readable explanations, medical insights, and recommendations.
 
-1) Make sure you have all the requirements in `requirements.py`
-> I assume you have already created heroku account and Heroku CLI on your machine. If not, follow this  [tutorial](https://devcenter.heroku.com/start).
-2) Open a terminal on the project directory and create a heroku application using `heroku create covid19-xray-detector`
-3) Since I use OpenCV Contrib Library, it requires `libsm6 libxender1` and it can be installed only though `apt-get`. So we import buildpack in heroku, use `heroku buildpacks:add --index 1 heroku-community/apt`.
-4) Create Aptfile, refer [this](https://github.com/arunpandian7/covid-detector-flask/blob/master/Aptfile)
-5) Now you are all set to go, deploy with a single command `git push heroku master`.
+The complete pipeline is deployed using **Docker and Docker Compose**, enabling scalable and reproducible deployment.
 
-If you any problem with deploying your flask or django app in heroku, contact [me](https://arunpandian7.github.io). 
+---
 
+## Features
 
+* COVID-19 detection from chest X-ray images
+* High-speed inference using **TensorRT optimization**
+* ONNX-based model deployment
+* LLM integration using Ollama (phi model)
+* AI-generated explanation of predictions
+* Flask-based web interface
+* Fully containerized multi-service architecture
+* Docker Compose orchestration
 
-> I am grateful for the many community and forums online that helped me to find solutions.
+---
 
+## Dataset
+
+* Chest X-ray dataset (COVID-19 / Normal / Pneumonia)
+* Preprocessed and normalized image data
+* Used for training and inference
+
+---
+
+## Model Information
+
+### Classification Model
+
+| Component         | Value                      |
+| ----------------- | -------------------------- |
+| Model Type        | CNN-based classifier       |
+| Framework         | PyTorch → ONNX             |
+| Input Size        | 224 × 224                  |
+| Output Classes    | COVID / Normal / Pneumonia |
+| Deployment Format | ONNX                       |
+
+---
+
+## System Architecture
+
+The system consists of the following components:
+
+* Flask Backend (API + Web UI)
+* ONNX Runtime + TensorRT Execution Provider
+* Deep Learning Model (ONNX)
+* NVIDIA GPU (CUDA acceleration)
+* Ollama LLM Service
+* Docker Containers
+* Docker Compose Orchestration
+
+---
+
+## Inference Workflow
+
+1. User uploads a chest X-ray image
+2. Flask backend preprocesses the image
+3. Image is passed to ONNX Runtime
+4. TensorRT accelerates inference on GPU
+5. Model returns predicted class
+6. Result is sent to Ollama LLM
+7. LLM generates:
+
+   * Explanation of result
+   * Possible causes
+   * Medical insights
+8. Final output is displayed in browser
+
+---
+
+## Project Structure
+
+```id="trt1"
+FINAL_PROJECT/
+│
+├── app.py
+├── predict.py
+├── onnx_infer.py
+├── llm_ollama.py
+├── requirements.txt
+├── Dockerfile
+├── docker/
+│   └── docker-compose.yml
+│
+├── templates/
+├── static/
+│
+└── model/   (download separately)
+```
+
+---
+
+## Technologies Used
+
+### Machine Learning
+
+* PyTorch
+* ONNX
+* ONNX Runtime
+* **TensorRT (GPU optimization)**
+
+### Backend
+
+* Flask
+* NumPy
+* OpenCV / PIL
+
+### Generative AI
+
+* Ollama
+* Phi model
+
+### Deployment
+
+* Docker
+* Docker Compose
+* NVIDIA Container Toolkit
+
+---
+
+## Docker Deployment
+
+### Prerequisites
+
+* Docker Desktop
+* NVIDIA GPU
+* CUDA-compatible drivers
+* NVIDIA Container Toolkit
+
+---
+
+## ▶Run the Application
+
+```bash id="trt2"
+docker-compose up -d
+```
+
+---
+
+## Access Application
+
+```id="trt3"
+http://localhost:5000
+```
+
+---
+
+## 🔌 Services
+
+| Service    | Port  |
+| ---------- | ----- |
+| Flask App  | 5000  |
+| Ollama API | 11434 |
+
+---
+
+## LLM Setup (Ollama)
+
+```bash id="trt4"
+docker exec -it ollama ollama pull phi
+```
+
+---
+
+## Model Setup
+
+Download ONNX model and place inside:
+
+```id="trt5"
+model/
+```
+
+(Provide dataset/model link here)
+
+---
+
+## GPU Acceleration (TensorRT)
+
+* ONNX model is executed using **TensorRT Execution Provider**
+* Enables:
+
+  * Faster inference
+  * Reduced latency
+  * Optimized GPU utilization
+
+---
+
+## Example Output
+
+The system provides:
+
+* Predicted disease class
+* Confidence score
+* AI-generated explanation
+* Medical guidance
+---
+
+## Future Improvements
+* Multi-model deployment
+* Cloud GPU deployment
+* Real-time X-ray streaming
+* Advanced medical explanation tuning
+
+---
+
+This project demonstrates a complete **end-to-end AI deployment pipeline** integrating:
+
+* Deep Learning for medical diagnosis
+* TensorRT-based GPU acceleration
+* ONNX model optimization
+* LLM-based explanation generation
+* Containerized multi-service deployment
+
+The system provides scalable, efficient, and explainable AI for medical imaging applications.
+
+---
+
+## License
+
+MIT License
